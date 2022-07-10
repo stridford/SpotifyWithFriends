@@ -9,7 +9,8 @@
 /coverage
 
 # production
-/build
+/client/build
+/infra/lambda/hello-world/dist/*
 
 # misc
 .DS_Store
