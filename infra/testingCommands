@@ -1,1 +1,2 @@
 curl "$(terraform output -raw base_url)/hello"
+curl "$(terraform output -raw base_url)/search-spotify?search=imperial%20circus"

@@ -2,6 +2,7 @@ import {APIGatewayEvent, APIGatewayProxyResult, Context} from 'aws-lambda';
 import AWS from 'aws-sdk';
 import axios, {AxiosResponse} from "axios";
 import TrackSearchResponse = SpotifyApi.TrackSearchResponse;
+import TrackObjectFull = SpotifyApi.TrackObjectFull;
 
 const ssm = new AWS.SSM({region: 'ap-southeast-2'});
 
@@ -47,10 +48,11 @@ export const handler = async function (event: APIGatewayEvent, context: Context)
     }
 
     const tracks = await fetchSpotifyApiSearchResults(spotifyApiAccessToken, searchQuery);
+    const searchResultDTOS = tracks.map(toSearchResultDTO);
 
     return {
         statusCode: 200,
-        body: JSON.stringify(tracks),
+        body: JSON.stringify(searchResultDTOS),
     };
 };
 
@@ -83,4 +85,12 @@ async function fetchSpotifyApiSearchResults(accessToken: string, searchQuery: st
     const axiosResponse: AxiosResponse<TrackSearchResponse> = await axios.get(`https://api.spotify.com/v1/search?q=${encodeURIComponent(searchQuery)}&type=track&market=AU`, config);
     const message = axiosResponse.data;
     return message.tracks.items;
+}
+
+function toSearchResultDTO(track: TrackObjectFull): SearchResultDTO {
+    return {
+        title: track.name,
+        artist: track.artists[0].name,
+        imageUrl: track.album.images[0].url
+    }
 }
