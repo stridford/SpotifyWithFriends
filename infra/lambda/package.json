@@ -1,0 +1,27 @@
+{
+  "name": "lambda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prebuild": "rm -rf hello-world/dist",
+    "build": "esbuild hello-world/hello.ts --bundle --minify --sourcemap --platform=node --external:aws-sdk --target=es2020 --outfile=hello-world/dist/hello.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.101",
+    "@types/node": "^18.0.3",
+    "@types/spotify-api": "^0.0.16",
+    "esbuild": "^0.14.48",
+    "nodemon": "^2.0.19",
+    "ts-node": "^10.8.2",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "aws-sdk": "2.1055.0",
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1"
+  }
+}
