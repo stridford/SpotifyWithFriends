@@ -1,6 +1,7 @@
 import {useParams, useSearchParams} from "react-router-dom";
 import {Button, Stack, TextField} from "@mui/material";
 import React, {useState} from "react";
+import {SpotifySearchTrackResult} from "./SpotifySearchTrackResult";
 
 export function Game() {
 
@@ -37,6 +38,7 @@ export function Game() {
                 <div>
                     Let's play some music!
                 </div>
+                <SpotifySearchTrackResult></SpotifySearchTrackResult>
                 <TextField id="outlined-basic"
                            label="Search tracks..."
                            value={searchInput}

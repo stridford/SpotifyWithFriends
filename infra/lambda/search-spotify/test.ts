@@ -1,6 +1,6 @@
 import {fetchSpotifyApiAccessToken} from "./SpotifyApiUtils";
 import axios, {AxiosResponse} from "axios";
-import TrackSearchResponse = SpotifyApi.TrackSearchResponse; // TODO: figure out what this namespace isn't being resolved
+import TrackSearchResponse = SpotifyApi.TrackSearchResponse;
 
 
 fetchSpotifyApiAccessToken().then(onAccessTokenReceived)
