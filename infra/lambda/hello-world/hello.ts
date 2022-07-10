@@ -45,5 +45,5 @@ function getMessage(event: APIGatewayEvent): string {
   if (event.queryStringParameters && event.queryStringParameters['Name']) {
     return `hello ${event.queryStringParameters['Name']}`
   }
-  return 'hello world and cattty are for us';
+  return 'hello world and dfdfdfd are for us';
 }

@@ -12,6 +12,12 @@ output "function_name" {
   value = aws_lambda_function.hello_world.function_name
 }
 
+output "spotify_search_function_name" {
+  description = "Name of the spotify search function"
+
+  value = aws_lambda_function.search-spotify.function_name
+}
+
 output "base_url" {
   description = "Base URL for API Gateway stage."
 

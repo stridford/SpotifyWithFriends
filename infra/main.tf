@@ -42,6 +42,13 @@ data "archive_file" "lambda_hello_world" { # this zipping logic could also be in
   output_path = "${path.module}/lambda/hello-world.zip"
 }
 
+data "archive_file" "lambda_search-spotify" {
+  type = "zip"
+
+  source_dir  = "${path.module}/lambda/search-spotify/dist" # grabs all files in this directory and zips them up
+  output_path = "${path.module}/lambda/search-spotify.zip"
+}
+
 resource "aws_s3_object" "lambda_hello_world" {
   bucket = aws_s3_bucket.lambda_bucket.id
 
@@ -49,6 +56,15 @@ resource "aws_s3_object" "lambda_hello_world" {
   source = data.archive_file.lambda_hello_world.output_path
 
   etag = filemd5(data.archive_file.lambda_hello_world.output_path)
+}
+
+resource "aws_s3_object" "lambda_search-spotify" {
+  bucket = aws_s3_bucket.lambda_bucket.id
+
+  key    = "search-spotify.zip"
+  source = data.archive_file.lambda_search-spotify.output_path
+
+  etag = filemd5(data.archive_file.lambda_search-spotify.output_path)
 }
 
 /*
@@ -70,12 +86,32 @@ resource "aws_lambda_function" "hello_world" {
 
   role = aws_iam_role.lambda_exec.arn
 }
+
+resource "aws_lambda_function" "search-spotify" {
+  function_name = "SearchSpotify"
+
+  s3_bucket = aws_s3_bucket.lambda_bucket.id
+  s3_key    = aws_s3_object.lambda_search-spotify.key
+
+  runtime = "nodejs16.x"
+  handler = "searchSpotify.handler"
+
+  source_code_hash = data.archive_file.lambda_search-spotify.output_base64sha256
+
+  role = aws_iam_role.lambda_exec.arn
+}
 /*
 aws_cloudwatch_log_group.hello_world defines a log group to store log messages from your Lambda function for 30 days. By convention, Lambda stores logs in a
 group with the name /aws/lambda/<Function Name>.
 */
 resource "aws_cloudwatch_log_group" "hello_world" {
   name = "/aws/lambda/${aws_lambda_function.hello_world.function_name}"
+
+  retention_in_days = 30
+}
+
+resource "aws_cloudwatch_log_group" "search_spotify" {
+  name = "/aws/lambda/${aws_lambda_function.search-spotify.function_name}"
 
   retention_in_days = 30
 }
@@ -109,6 +145,11 @@ resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {
 resource "aws_iam_role_policy_attachment" "lambda_dynamodb_policy" {
   role       = aws_iam_role.lambda_exec.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_admin_policy" { # TODO: make this more fine grained later
+  role       = aws_iam_role.lambda_exec.name
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
 resource "aws_apigatewayv2_api" "lambda" {
@@ -156,6 +197,21 @@ resource "aws_apigatewayv2_route" "hello_world" {
   target    = "integrations/${aws_apigatewayv2_integration.hello_world.id}"
 }
 
+resource "aws_apigatewayv2_integration" "search_spotify" {
+  api_id = aws_apigatewayv2_api.lambda.id
+
+  integration_uri    = aws_lambda_function.search-spotify.invoke_arn
+  integration_type   = "AWS_PROXY"
+  integration_method = "POST"
+}
+
+resource "aws_apigatewayv2_route" "search_spotify" {
+  api_id = aws_apigatewayv2_api.lambda.id
+
+  route_key = "GET /search-spotify"
+  target    = "integrations/${aws_apigatewayv2_integration.search_spotify.id}"
+}
+
 resource "aws_cloudwatch_log_group" "api_gw" {
   name = "/aws/api_gw/${aws_apigatewayv2_api.lambda.name}"
 
@@ -166,6 +222,15 @@ resource "aws_lambda_permission" "api_gw" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.hello_world.function_name
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
+}
+
+resource "aws_lambda_permission" "api_gw_search_spotify" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.search-spotify.function_name
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"

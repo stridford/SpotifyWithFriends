@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prebuild": "rm -rf hello-world/dist",
-    "build": "esbuild hello-world/hello.ts --bundle --minify --sourcemap --platform=node --external:aws-sdk --target=es2020 --outfile=hello-world/dist/hello.js"
+    "prebuild-hello": "rm -rf hello-world/dist",
+    "build-hello": "esbuild hello-world/hello.ts --bundle --minify --sourcemap --platform=node --external:aws-sdk --target=es2020 --outfile=hello-world/dist/hello.js",
+    "prebuild-spotify-search": "rm -rf search-spotify/dist",
+    "build-spotify-search": "esbuild search-spotify/searchSpotify.ts --bundle --minify --sourcemap --platform=node --external:aws-sdk --target=es2020 --outfile=search-spotify/dist/searchSpotify.js"
   },
   "author": "",
   "license": "ISC",
