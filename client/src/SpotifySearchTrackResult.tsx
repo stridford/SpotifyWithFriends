@@ -4,13 +4,13 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardMedia from "@mui/material/CardMedia";
 
-export function SpotifySearchTrackResult() {
+type SpotifySearchTrackResultProps = {
+    track: SearchResultDTO
+}
 
-    const track: SearchResultDTO = {
-        artist: 'artist guy',
-        imageUrl: 'https://i.scdn.co/image/ab67616d0000b273b7b55d090d6b465130691a73',
-        title: 'title'
-    }
+export function SpotifySearchTrackResult(props: SpotifySearchTrackResultProps) {
+
+    const track = props.track;
 
     return (
         <Card sx={{display: 'flex'}}>

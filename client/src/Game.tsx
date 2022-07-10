@@ -2,6 +2,21 @@ import {useParams, useSearchParams} from "react-router-dom";
 import {Button, Stack, TextField} from "@mui/material";
 import React, {useState} from "react";
 import {SpotifySearchTrackResult} from "./SpotifySearchTrackResult";
+import Autocomplete from "@mui/material/Autocomplete";
+
+const tracks: SearchResultDTO[] = [
+    {
+        artist: 'artist guy',
+        imageUrl: 'https://i.scdn.co/image/ab67616d0000b273b7b55d090d6b465130691a73',
+        title: 'title'
+    },
+    {
+        artist: 'artist guy1',
+        imageUrl: 'https://i.scdn.co/image/ab67616d0000b273b7b55d090d6b465130691a73',
+        title: 'title1'
+    },
+
+]
 
 export function Game() {
 
@@ -38,7 +53,8 @@ export function Game() {
                 <div>
                     Let's play some music!
                 </div>
-                <SpotifySearchTrackResult></SpotifySearchTrackResult>
+                <SpotifySearchTrackResult track={tracks[0]}></SpotifySearchTrackResult>
+                <SpotifySearchTrackResult track={tracks[1]}></SpotifySearchTrackResult>
                 <TextField id="outlined-basic"
                            label="Search tracks..."
                            value={searchInput}
