@@ -5,31 +5,37 @@ import TrackSearchResponse = SpotifyApi.TrackSearchResponse;
 
 const ssm = new AWS.SSM({region: 'ap-southeast-2'});
 
-export const handler = async (event: APIGatewayEvent, context: Context): Promise<APIGatewayProxyResult> => {
+let spotifyApiAccessToken: Nullable<string> = null;
+let clientId: Nullable<string> = null;
+let clientSecret: Nullable<string> = null;
 
-    const clientIdResult = await ssm.getParameter({Name: '/spotify-api/client-id', WithDecryption: true}).promise()
-    const clientSecretResult = await ssm.getParameter({Name: '/spotify-api/client-secret', WithDecryption: true}).promise()
+export const handler = async function (event: APIGatewayEvent, context: Context): Promise<APIGatewayProxyResult> {
 
-    const clientId1 = clientIdResult.Parameter?.Value;
-    const clientSecret1 = clientSecretResult.Parameter?.Value;
+    if (!clientId && !clientSecret) {
+        const clientIdResult = await ssm.getParameter({Name: '/spotify-api/client-id', WithDecryption: true}).promise();
+        const clientSecretResult = await ssm.getParameter({Name: '/spotify-api/client-secret', WithDecryption: true}).promise();
 
-    if (!clientId1) {
-        console.error('No client id');
+        clientId = clientIdResult.Parameter?.Value;
+        clientSecret = clientSecretResult.Parameter?.Value;
+    }
+
+    if (!clientId) {
         return {
             statusCode: 500,
             body: 'no client id'
         }
     }
 
-    if (!clientSecret1) {
-        console.error('No client id');
+    if (!clientSecret) {
         return {
             statusCode: 500,
             body: 'no client secret'
         }
     }
 
-    const spotifyApiAccessToken = await fetchSpotifyApiAccessToken(clientId1, clientSecret1);
+    if (!spotifyApiAccessToken) {
+        spotifyApiAccessToken = await fetchSpotifyApiAccessToken(clientId, clientSecret)
+    }
     const tracks = await fetchSpotifyApiSearchResults(spotifyApiAccessToken, 'imperial circus');
 
     return {
