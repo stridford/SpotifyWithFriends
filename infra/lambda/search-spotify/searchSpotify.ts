@@ -36,7 +36,17 @@ export const handler = async function (event: APIGatewayEvent, context: Context)
     if (!spotifyApiAccessToken) {
         spotifyApiAccessToken = await fetchSpotifyApiAccessToken(clientId, clientSecret)
     }
-    const tracks = await fetchSpotifyApiSearchResults(spotifyApiAccessToken, 'imperial circus');
+
+    const searchQuery: Nullable<string> = event?.queryStringParameters?.search;
+
+    if (!searchQuery) {
+        return {
+            statusCode: 200,
+            body: JSON.stringify([]),
+        };
+    }
+
+    const tracks = await fetchSpotifyApiSearchResults(spotifyApiAccessToken, searchQuery);
 
     return {
         statusCode: 200,
