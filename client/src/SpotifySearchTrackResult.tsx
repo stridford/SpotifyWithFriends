@@ -1,6 +1,6 @@
-// import TrackObjectFull = SpotifyApi.TrackObjectFull;
+import TrackObjectFull = SpotifyApi.TrackObjectFull;
 
-export function SpotifySearchTrackResult(trackSearchResult: string) {
+export function SpotifySearchTrackResult(trackSearchResult: TrackObjectFull) {
 
 
 }
