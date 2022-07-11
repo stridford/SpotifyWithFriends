@@ -13,10 +13,10 @@ export function SpotifySearchTrackResult(props: SpotifySearchTrackResultProps) {
     const track = props.track;
 
     return (
-        <Card sx={{display: 'flex'}}>
+        <Card sx={{display: 'flex', height: "75px", cursor: "pointer"}}>
             <CardMedia
                 component="img"
-                sx={{width: 120}}
+                sx={{width: 60}}
                 image={track.imageUrl}
             />
             <Box sx={{display: 'flex', flexDirection: 'column'}}>

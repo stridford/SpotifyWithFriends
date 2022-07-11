@@ -14,6 +14,9 @@ export function Game() {
     const [tracks, setTracks] = useState<SearchResultDTO[]>([]);
 
     useEffect(() => {
+        if (searchInput.trim().length == 0) {
+            setTracks([]);
+        }
         fetchTracks(searchInput).then(result => {
             setTracks(result);
         })
