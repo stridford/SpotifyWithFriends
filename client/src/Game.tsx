@@ -14,12 +14,9 @@ export function Game() {
     const [tracks, setTracks] = useState<SearchResultDTO[]>([]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const result = await fetchTracks(searchInput)
+        fetchTracks(searchInput).then(result => {
             setTracks(result);
-        };
-
-        fetchData();
+        })
     }, [searchInput]);
 
     if (!gameCode) {
