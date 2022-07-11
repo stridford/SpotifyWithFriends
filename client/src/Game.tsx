@@ -61,3 +61,11 @@ async function fetchTracks(search: string): Promise<SearchResultDTO[]> {
     const axiosResponse = await axios.get(`https://6h78kwqsuh.execute-api.ap-southeast-2.amazonaws.com/serverless_lambda_stage/search-spotify?search=${encodeURIComponent(search)}`);
     return axiosResponse.data
 }
+
+function debounce(fn: Function, ms = 300): (this: any, ...args: any[]) => void {
+    let timeoutId: ReturnType<typeof setTimeout>;
+    return function (this: any, ...args: any[]) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => fn.apply(this, args), ms);
+    };
+}

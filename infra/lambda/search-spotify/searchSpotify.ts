@@ -112,6 +112,6 @@ function toSearchResultDTO(track: TrackObjectFull): SearchResultDTO {
         trackId: track.id,
         title: track.name,
         artist: track.artists[0].name,
-        imageUrl: track.album.images[0].url
+        imageUrl: track.album.images[2].url
     }
 }
