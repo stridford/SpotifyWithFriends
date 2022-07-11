@@ -1,0 +1,85 @@
+{
+  "version": "1.0",
+  "resource": "/search-spotify",
+  "path": "/serverless_lambda_stage/search-spotify",
+  "httpMethod": "GET",
+  "headers": {
+    "Content-Length": "0",
+    "Host": "6h78kwqsuh.execute-api.ap-southeast-2.amazonaws.com",
+    "User-Agent": "curl/7.82.0",
+    "X-Amzn-Trace-Id": "Root=1-62cb37ec-1d49e0a24c14562940333d86",
+    "X-Forwarded-For": "202.65.79.155",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https",
+    "accept": "*/*"
+  },
+  "multiValueHeaders": {
+    "Content-Length": [
+      "0"
+    ],
+    "Host": [
+      "6h78kwqsuh.execute-api.ap-southeast-2.amazonaws.com"
+    ],
+    "User-Agent": [
+      "curl/7.82.0"
+    ],
+    "X-Amzn-Trace-Id": [
+      "Root=1-62cb37ec-1d49e0a24c14562940333d86"
+    ],
+    "X-Forwarded-For": [
+      "202.65.79.155"
+    ],
+    "X-Forwarded-Port": [
+      "443"
+    ],
+    "X-Forwarded-Proto": [
+      "https"
+    ],
+    "accept": [
+      "*/*"
+    ]
+  },
+  "queryStringParameters": {
+    "search": "imperial circus"
+  },
+  "multiValueQueryStringParameters": {
+    "search": [
+      "imperial"
+    ]
+  },
+  "requestContext": {
+    "accountId": "217404408485",
+    "apiId": "6h78kwqsuh",
+    "domainName": "6h78kwqsuh.execute-api.ap-southeast-2.amazonaws.com",
+    "domainPrefix": "6h78kwqsuh",
+    "extendedRequestId": "VEWs6h5-SwMEJyw=",
+    "httpMethod": "GET",
+    "identity": {
+      "accessKey": null,
+      "accountId": null,
+      "caller": null,
+      "cognitoAmr": null,
+      "cognitoAuthenticationProvider": null,
+      "cognitoAuthenticationType": null,
+      "cognitoIdentityId": null,
+      "cognitoIdentityPoolId": null,
+      "principalOrgId": null,
+      "sourceIp": "202.65.79.155",
+      "user": null,
+      "userAgent": "curl/7.82.0",
+      "userArn": null
+    },
+    "path": "/serverless_lambda_stage/search-spotify",
+    "protocol": "HTTP/1.1",
+    "requestId": "VEWs6h5-SwMEJyw=",
+    "requestTime": "10/Jul/2022:20:34:52 +0000",
+    "requestTimeEpoch": 1657485292007,
+    "resourceId": "GET /search-spotify",
+    "resourcePath": "/search-spotify",
+    "stage": "serverless_lambda_stage"
+  },
+  "pathParameters": null,
+  "stageVariables": null,
+  "body": null,
+  "isBase64Encoded": false
+}

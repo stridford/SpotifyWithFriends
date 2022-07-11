@@ -49,6 +49,13 @@ data "archive_file" "lambda_search-spotify" {
   output_path = "${path.module}/lambda/search-spotify.zip"
 }
 
+data "archive_file" "lambda_add-song-to-playlist" {
+  type = "zip"
+
+  source_dir  = "${path.module}/lambda/add-song-to-playlist/dist" # grabs all files in this directory and zips them up
+  output_path = "${path.module}/lambda/add-song-to-playlist.zip"
+}
+
 resource "aws_s3_object" "lambda_hello_world" {
   bucket = aws_s3_bucket.lambda_bucket.id
 
@@ -65,6 +72,15 @@ resource "aws_s3_object" "lambda_search-spotify" {
   source = data.archive_file.lambda_search-spotify.output_path
 
   etag = filemd5(data.archive_file.lambda_search-spotify.output_path)
+}
+
+resource "aws_s3_object" "lambda_add-song-to-playlist" {
+  bucket = aws_s3_bucket.lambda_bucket.id
+
+  key    = "add-song-to-playlist.zip"
+  source = data.archive_file.lambda_add-song-to-playlist.output_path
+
+  etag = filemd5(data.archive_file.lambda_add-song-to-playlist.output_path)
 }
 
 /*
@@ -100,6 +116,20 @@ resource "aws_lambda_function" "search-spotify" {
 
   role = aws_iam_role.lambda_exec.arn
 }
+
+resource "aws_lambda_function" "add-song-to-playlist" {
+  function_name = "AddSongToPlaylist"
+
+  s3_bucket = aws_s3_bucket.lambda_bucket.id
+  s3_key    = aws_s3_object.lambda_add-song-to-playlist.key
+
+  runtime = "nodejs16.x"
+  handler = "addSongToPlaylist.handler"
+
+  source_code_hash = data.archive_file.lambda_add-song-to-playlist.output_base64sha256
+
+  role = aws_iam_role.lambda_exec.arn
+}
 /*
 aws_cloudwatch_log_group.hello_world defines a log group to store log messages from your Lambda function for 30 days. By convention, Lambda stores logs in a
 group with the name /aws/lambda/<Function Name>.
@@ -112,6 +142,12 @@ resource "aws_cloudwatch_log_group" "hello_world" {
 
 resource "aws_cloudwatch_log_group" "search_spotify" {
   name = "/aws/lambda/${aws_lambda_function.search-spotify.function_name}"
+
+  retention_in_days = 30
+}
+
+resource "aws_cloudwatch_log_group" "add_song_to_playlist" {
+  name = "/aws/lambda/${aws_lambda_function.add-song-to-playlist.function_name}"
 
   retention_in_days = 30
 }
@@ -212,6 +248,21 @@ resource "aws_apigatewayv2_route" "search_spotify" {
   target    = "integrations/${aws_apigatewayv2_integration.search_spotify.id}"
 }
 
+resource "aws_apigatewayv2_integration" "add_song_to_playlist" {
+  api_id = aws_apigatewayv2_api.lambda.id
+
+  integration_uri    = aws_lambda_function.add-song-to-playlist.invoke_arn
+  integration_type   = "AWS_PROXY"
+  integration_method = "POST"
+}
+
+resource "aws_apigatewayv2_route" "add_song_to_playlist" {
+  api_id = aws_apigatewayv2_api.lambda.id
+
+  route_key = "PUT /playlist"
+  target    = "integrations/${aws_apigatewayv2_integration.add_song_to_playlist.id}"
+}
+
 resource "aws_cloudwatch_log_group" "api_gw" {
   name = "/aws/api_gw/${aws_apigatewayv2_api.lambda.name}"
 
@@ -231,6 +282,15 @@ resource "aws_lambda_permission" "api_gw_search_spotify" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.search-spotify.function_name
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
+}
+
+resource "aws_lambda_permission" "api_gw_add_song_to_playlist" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.add-song-to-playlist.function_name
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"

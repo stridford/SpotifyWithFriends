@@ -8,7 +8,9 @@
     "prebuild-hello": "rm -rf hello-world/dist",
     "build-hello": "esbuild hello-world/hello.ts --bundle --minify --sourcemap --platform=node --external:aws-sdk --target=es2020 --outfile=hello-world/dist/hello.js",
     "prebuild-spotify-search": "rm -rf search-spotify/dist",
-    "build-spotify-search": "esbuild search-spotify/searchSpotify.ts --bundle --minify --sourcemap --platform=node --external:aws-sdk --target=es2020 --outfile=search-spotify/dist/searchSpotify.js"
+    "build-spotify-search": "esbuild search-spotify/searchSpotify.ts --bundle --minify --sourcemap --platform=node --external:aws-sdk --target=es2020 --outfile=search-spotify/dist/searchSpotify.js",
+    "prebuild-add-song-to-playlist": "rm -rf add-song-to-playlist/dist",
+    "build-add-song-to-playlist": "esbuild add-song-to-playlist/addSongToPlaylist.ts --bundle --minify --sourcemap --platform=node --external:aws-sdk --target=es2020 --outfile=add-song-to-playlist/dist/addSongToPlaylist.js"
   },
   "author": "",
   "license": "ISC",
