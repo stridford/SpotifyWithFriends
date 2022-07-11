@@ -52,6 +52,11 @@ export const handler = async function (event: APIGatewayEvent, context: Context)
 
     return {
         statusCode: 200,
+        headers: {
+            "Access-Control-Allow-Headers" : "Content-Type",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+        },
         body: JSON.stringify(searchResultDTOS),
     };
 };
@@ -89,6 +94,7 @@ async function fetchSpotifyApiSearchResults(accessToken: string, searchQuery: st
 
 function toSearchResultDTO(track: TrackObjectFull): SearchResultDTO {
     return {
+        trackId: track.id,
         title: track.name,
         artist: track.artists[0].name,
         imageUrl: track.album.images[0].url
