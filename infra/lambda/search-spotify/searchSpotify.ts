@@ -23,6 +23,11 @@ export const handler = async function (event: APIGatewayEvent, context: Context)
     if (!clientId) {
         return {
             statusCode: 500,
+            headers: {
+                "Access-Control-Allow-Headers" : "Content-Type",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+            },
             body: 'no client id'
         }
     }
@@ -30,6 +35,11 @@ export const handler = async function (event: APIGatewayEvent, context: Context)
     if (!clientSecret) {
         return {
             statusCode: 500,
+            headers: {
+                "Access-Control-Allow-Headers" : "Content-Type",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+            },
             body: 'no client secret'
         }
     }
@@ -43,6 +53,11 @@ export const handler = async function (event: APIGatewayEvent, context: Context)
     if (!searchQuery) {
         return {
             statusCode: 200,
+            headers: {
+                "Access-Control-Allow-Headers" : "Content-Type",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+            },
             body: JSON.stringify([]),
         };
     }

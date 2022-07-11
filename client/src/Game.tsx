@@ -1,5 +1,5 @@
 import {useParams, useSearchParams} from "react-router-dom";
-import {Button, Stack, TextField} from "@mui/material";
+import {Button, Container, Stack, TextField} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import {SpotifySearchTrackResult} from "./SpotifySearchTrackResult";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -15,11 +15,8 @@ export function Game() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios(
-                `https://6h78kwqsuh.execute-api.ap-southeast-2.amazonaws.com/serverless_lambda_stage/search-spotify?search=${encodeURIComponent(searchInput)}`,
-            );
-
-            setTracks(result.data);
+            const result = await fetchTracks(searchInput)
+            setTracks(result);
         };
 
         fetchData();
@@ -43,28 +40,18 @@ export function Game() {
 
     return (
         <div>
-            <Stack spacing={5}
-                   sx={{
-                       textAlign: 'center'
-                   }}>
-                <div>
-                    Welcome {player}!
-                </div>
-                <div>
-                    Let's play some music!
-                </div>
+            {/*<Button variant="contained"*/}
+            {/*        onClick={onCopyJoiningUrl}*/}
+            {/*        className={"listenButton"}>Get joining url</Button>*/}
+            <Stack width="600px">
                 <TextField id="outlined-basic"
                            label="Search tracks..."
                            value={searchInput}
                            onChange={handleSearchInputChange}
                            autoComplete="off"
                            variant="outlined"/>
-
+                {tracks.map(track => <SpotifySearchTrackResult key={track.trackId} track={track}/>)}
             </Stack>
-            {tracks.map(track => <SpotifySearchTrackResult key={track.trackId} track={track}/>)}
-            <Button variant="contained"
-                    onClick={onCopyJoiningUrl}
-                    className={"listenButton"}>Get joining url</Button>
         </div>
     )
 }
