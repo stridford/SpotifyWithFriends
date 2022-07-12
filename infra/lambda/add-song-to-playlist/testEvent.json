@@ -1,13 +1,14 @@
 {
   "version": "1.0",
-  "resource": "/search-spotify",
-  "path": "/serverless_lambda_stage/search-spotify",
-  "httpMethod": "GET",
+  "resource": "/playlist",
+  "path": "/serverless_lambda_stage/playlist",
+  "httpMethod": "PUT",
   "headers": {
-    "Content-Length": "0",
+    "Content-Length": "29",
+    "Content-Type": "application/json",
     "Host": "6h78kwqsuh.execute-api.ap-southeast-2.amazonaws.com",
     "User-Agent": "curl/7.82.0",
-    "X-Amzn-Trace-Id": "Root=1-62cb37ec-1d49e0a24c14562940333d86",
+    "X-Amzn-Trace-Id": "Root=1-62cde5f1-64f45fc72ae55f3869f281a4",
     "X-Forwarded-For": "202.65.79.155",
     "X-Forwarded-Port": "443",
     "X-Forwarded-Proto": "https",
@@ -15,7 +16,10 @@
   },
   "multiValueHeaders": {
     "Content-Length": [
-      "0"
+      "29"
+    ],
+    "Content-Type": [
+      "application/json"
     ],
     "Host": [
       "6h78kwqsuh.execute-api.ap-southeast-2.amazonaws.com"
@@ -24,7 +28,7 @@
       "curl/7.82.0"
     ],
     "X-Amzn-Trace-Id": [
-      "Root=1-62cb37ec-1d49e0a24c14562940333d86"
+      "Root=1-62cde5f1-64f45fc72ae55f3869f281a4"
     ],
     "X-Forwarded-For": [
       "202.65.79.155"
@@ -39,21 +43,15 @@
       "*/*"
     ]
   },
-  "queryStringParameters": {
-    "search": "imperial circus"
-  },
-  "multiValueQueryStringParameters": {
-    "search": [
-      "imperial"
-    ]
-  },
+  "queryStringParameters": null,
+  "multiValueQueryStringParameters": null,
   "requestContext": {
     "accountId": "217404408485",
     "apiId": "6h78kwqsuh",
     "domainName": "6h78kwqsuh.execute-api.ap-southeast-2.amazonaws.com",
     "domainPrefix": "6h78kwqsuh",
-    "extendedRequestId": "VEWs6h5-SwMEJyw=",
-    "httpMethod": "GET",
+    "extendedRequestId": "VLDduiXdywMEMDw=",
+    "httpMethod": "PUT",
     "identity": {
       "accessKey": null,
       "accountId": null,
@@ -69,17 +67,17 @@
       "userAgent": "curl/7.82.0",
       "userArn": null
     },
-    "path": "/serverless_lambda_stage/search-spotify",
+    "path": "/serverless_lambda_stage/playlist",
     "protocol": "HTTP/1.1",
-    "requestId": "VEWs6h5-SwMEJyw=",
-    "requestTime": "10/Jul/2022:20:34:52 +0000",
-    "requestTimeEpoch": 1657485292007,
-    "resourceId": "GET /search-spotify",
-    "resourcePath": "/search-spotify",
+    "requestId": "VLDduiXdywMEMDw=",
+    "requestTime": "12/Jul/2022:21:21:53 +0000",
+    "requestTimeEpoch": 1657660913207,
+    "resourceId": "PUT /playlist",
+    "resourcePath": "/playlist",
     "stage": "serverless_lambda_stage"
   },
   "pathParameters": null,
   "stageVariables": null,
-  "body": null,
+  "body": "{\"key1\":\"value\",\"key2\":\"cat\"}",
   "isBase64Encoded": false
 }
