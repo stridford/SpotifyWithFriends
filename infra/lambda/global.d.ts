@@ -6,3 +6,9 @@ type SearchResultDTO = {
     title: string,
     artist: string
 }
+
+type AddSongToPlaylistDTO = {
+    gameId: string,
+    addedByPlayer: string,
+    trackId: string
+}

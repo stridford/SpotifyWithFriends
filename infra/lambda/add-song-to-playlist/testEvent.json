@@ -78,6 +78,6 @@
   },
   "pathParameters": null,
   "stageVariables": null,
-  "body": "{\"key1\":\"value\",\"key2\":\"cat\"}",
+  "body": "{\"gameId\":\"123\",\"addedByPlayer\":\"cat\",\"trackId\":\"abc123\"}",
   "isBase64Encoded": false
 }
