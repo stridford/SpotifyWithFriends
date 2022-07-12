@@ -45,7 +45,7 @@ export default function ButtonAppBar() {
                             textDecoration: 'none',
                         }}
                     >
-                        Spotify with Friends!
+                        HAPPY FUN TIME GAMU
                     </Typography>
                 </Toolbar>
             </AppBar>

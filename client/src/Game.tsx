@@ -14,12 +14,21 @@ export function Game() {
     const [tracks, setTracks] = useState<SearchResultDTO[]>([]);
 
     useEffect(() => {
+        let isSubscribed = true;
         if (searchInput.trim().length == 0) {
             setTracks([]);
+            return () => {
+                isSubscribed = false;
+            }
         }
         fetchTracks(searchInput).then(result => {
-            setTracks(result);
-        })
+            if (isSubscribed) {
+                setTracks(result);
+            }
+        });
+        return () => {
+            isSubscribed = false;
+        }
     }, [searchInput]);
 
     if (!gameCode) {
