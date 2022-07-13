@@ -1,6 +1,6 @@
 import {useParams, useSearchParams} from "react-router-dom";
 import {Stack, TextField} from "@mui/material";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {SpotifySearchTrackResult} from "./SpotifySearchTrackResult";
 import axios from "axios";
 
@@ -37,14 +37,16 @@ export function Game() {
         }
     }, [searchInput]);
 
-    if (!gameCode) {
-        console.error('No game code found, dont render element');
-        return null;
-    }
-
-    const joiningUrl = getJoiningUrl(gameCode);
+    const debouncedHandler = useMemo(() => {
+        return debounce(handleSearchInputChange, 500)
+    }, [])
 
     function onCopyJoiningUrl(): void { // TODO: include common copy icon in button
+        if (!gameCode) {
+            console.error('No game code');
+            return;
+        }
+        const joiningUrl = getJoiningUrl(gameCode);
         navigator.clipboard.writeText(joiningUrl);
     }
 
@@ -61,8 +63,7 @@ export function Game() {
             <Stack width="600px">
                 <TextField id="outlined-basic"
                            label="Search tracks..."
-                           value={searchInput}
-                           onChange={handleSearchInputChange}
+                           onChange={debouncedHandler}
                            autoComplete="off"
                            variant="outlined"/>
                 {tracks.map(track => <SpotifySearchTrackResult key={track.trackId} track={track}/>)}
