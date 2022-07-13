@@ -1,8 +1,7 @@
 import {useParams, useSearchParams} from "react-router-dom";
-import {Button, Container, Stack, TextField} from "@mui/material";
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import {Stack, TextField} from "@mui/material";
+import React, {useCallback, useEffect, useState} from "react";
 import {SpotifySearchTrackResult} from "./SpotifySearchTrackResult";
-import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
 
 export function Game() {
@@ -21,9 +20,11 @@ export function Game() {
             return;
         }
         let isSubscribed = true;
+        console.log('subscribed is true')
         debouncedFetchAndSet(isSubscribed, searchInput);
         return () => {
             isSubscribed = false;
+            console.log('subscribed is false')
         }
     }, [searchInput]);
 
@@ -45,6 +46,7 @@ export function Game() {
 
     function fetchAndSetTracks(isSubscribed: boolean, searchInput: string): void {
         fetchTracks(searchInput.trim()).then(result => {
+            console.log(`Reading subscribed...${isSubscribed}`)
             if (isSubscribed) {
                 setTracks(result);
             }
