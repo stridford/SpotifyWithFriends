@@ -1,6 +1,6 @@
 import {useParams, useSearchParams} from "react-router-dom";
 import {Stack, TextField} from "@mui/material";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {SpotifySearchTrackResult} from "./SpotifySearchTrackResult";
 import axios from "axios";
 
@@ -12,7 +12,7 @@ export function Game() {
     const [searchInput, setSearchInput] = useState('');
     const [tracks, setTracks] = useState<SearchResultDTO[]>([]);
 
-    const debouncedFetchAndSet = useCallback(debounce(fetchAndSetTracks, 500), []);
+    // const debouncedFetchAndSet = useCallback(debounce(fetchAndSetTracks, 500), []);
 
     useEffect(() => {
         if (!searchInput.trim()) {
@@ -20,11 +20,20 @@ export function Game() {
             return;
         }
         let isSubscribed = true;
-        console.log('subscribed is true')
-        debouncedFetchAndSet(isSubscribed, searchInput);
+        console.log('subscribed is true');
+        fetchAndSetTracks(searchInput);
         return () => {
             isSubscribed = false;
             console.log('subscribed is false')
+        }
+
+        function fetchAndSetTracks(searchInput: string): void {
+            fetchTracks(searchInput.trim()).then(result => {
+                console.log(`Reading subscribed...${isSubscribed}`)
+                if (isSubscribed) {
+                    setTracks(result);
+                }
+            });
         }
     }, [searchInput]);
 
@@ -42,15 +51,6 @@ export function Game() {
 
     function handleSearchInputChange(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
         setSearchInput(e.target.value);
-    }
-
-    function fetchAndSetTracks(isSubscribed: boolean, searchInput: string): void {
-        fetchTracks(searchInput.trim()).then(result => {
-            console.log(`Reading subscribed...${isSubscribed}`)
-            if (isSubscribed) {
-                setTracks(result);
-            }
-        });
     }
 
     return (
