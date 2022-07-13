@@ -13,17 +13,15 @@ export function Game() {
     const [searchInput, setSearchInput] = useState('');
     const [tracks, setTracks] = useState<SearchResultDTO[]>([]);
 
+    const debouncedFetchAndSet = useCallback(debounce(fetchAndSetTracks, 500), []);
+
     useEffect(() => {
         if (!searchInput.trim()) {
             setTracks([]);
             return;
         }
         let isSubscribed = true;
-        fetchTracks(searchInput.trim()).then(result => {
-            if (isSubscribed) {
-                setTracks(result);
-            }
-        });
+        debouncedFetchAndSet(isSubscribed, searchInput);
         return () => {
             isSubscribed = false;
         }
@@ -43,6 +41,14 @@ export function Game() {
 
     function handleSearchInputChange(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
         setSearchInput(e.target.value);
+    }
+
+    function fetchAndSetTracks(isSubscribed: boolean, searchInput: string): void {
+        fetchTracks(searchInput.trim()).then(result => {
+            if (isSubscribed) {
+                setTracks(result);
+            }
+        });
     }
 
     return (
