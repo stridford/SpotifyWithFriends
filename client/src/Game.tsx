@@ -1,6 +1,6 @@
 import {useParams, useSearchParams} from "react-router-dom";
 import {Button, Container, Stack, TextField} from "@mui/material";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {SpotifySearchTrackResult} from "./SpotifySearchTrackResult";
 import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
@@ -14,8 +14,12 @@ export function Game() {
     const [tracks, setTracks] = useState<SearchResultDTO[]>([]);
 
     useEffect(() => {
+        if (!searchInput.trim()) {
+            setTracks([]);
+            return;
+        }
         let isSubscribed = true;
-        fetchTracks(searchInput).then(result => {
+        fetchTracks(searchInput.trim()).then(result => {
             if (isSubscribed) {
                 setTracks(result);
             }
