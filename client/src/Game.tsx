@@ -1,8 +1,8 @@
 import {useParams, useSearchParams} from "react-router-dom";
 import {Stack, TextField} from "@mui/material";
 import React, {useEffect, useMemo, useState} from "react";
-import {SpotifySearchTrackResult} from "./SpotifySearchTrackResult";
 import axios from "axios";
+import {TrackResults} from "./TrackResults";
 
 export function Game() {
 
@@ -11,27 +11,28 @@ export function Game() {
     const player = searchParams.get('player');
     const [searchInput, setSearchInput] = useState('');
     const [tracks, setTracks] = useState<SearchResultDTO[]>([]);
+    const [isSearching, setIsSearching] = useState(false)
 
     // const debouncedFetchAndSet = useCallback(debounce(fetchAndSetTracks, 500), []);
 
     useEffect(() => {
         if (!searchInput.trim()) {
             setTracks([]);
+            setIsSearching(false);
             return;
         }
         let isSubscribed = true;
-        console.log('subscribed is true');
         fetchAndSetTracks(searchInput);
         return () => {
             isSubscribed = false;
-            console.log('subscribed is false')
         }
 
         function fetchAndSetTracks(searchInput: string): void {
             fetchTracks(searchInput.trim()).then(result => {
-                console.log(`Reading subscribed...${isSubscribed}`)
                 if (isSubscribed) {
                     setTracks(result);
+                    setIsSearching(false);
+                    console.log('set is searching false')
                 }
             });
         }
@@ -51,6 +52,12 @@ export function Game() {
         return debounce(handleSearchInputChange, 500)
     }, [])
 
+    function handleActualSearchInputChange(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
+        setIsSearching(true)
+        console.log('set is searching true')
+        debouncedHandler(e)
+    }
+
     function handleSearchInputChange(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
         setSearchInput(e.target.value);
     }
@@ -63,10 +70,10 @@ export function Game() {
             <Stack width="600px">
                 <TextField id="outlined-basic"
                            label="Search tracks..."
-                           onChange={debouncedHandler}
+                           onChange={handleActualSearchInputChange}
                            autoComplete="off"
                            variant="outlined"/>
-                {tracks.map(track => <SpotifySearchTrackResult key={track.trackId} track={track}/>)}
+                <TrackResults searchResultDTOS={tracks} isSearching={isSearching}/>
             </Stack>
         </div>
     )
