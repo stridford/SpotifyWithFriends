@@ -9,9 +9,10 @@ export function Game() {
     const [searchParams, setSearchParams] = useSearchParams();
     const {gameCode} = useParams();
     const player = searchParams.get('player');
-    const [searchInput, setSearchInput] = useState('');
+    const [searchInput, setSearchInput] = useState<string>('');
     const [tracks, setTracks] = useState<SearchResultDTO[]>([]);
-    const [isSearching, setIsSearching] = useState(false)
+    const [isSearching, setIsSearching] = useState<boolean>(false);
+    const [playlist, setPlaylist] = useState<SearchResultDTO[]>([]);
 
     // const debouncedFetchAndSet = useCallback(debounce(fetchAndSetTracks, 500), []);
 
@@ -62,12 +63,12 @@ export function Game() {
 
     function handleTrackClick(selectedTrack: SearchResultDTO) {
         // remove track from results
-        // add item to playlist in dynamodb and ui
-        // send ws message that a track was added
         const filtered = tracks.filter(track => track.trackId != selectedTrack.trackId);
         setTracks(filtered);
-        console.log('track was clicked yo');
-        console.log(selectedTrack);
+        // add item to playlist in dynamodb and ui
+        const newPlaylist = playlist.concat(selectedTrack);
+        setPlaylist(newPlaylist);
+        // send ws message that a track was added
     }
 
     return (
@@ -85,6 +86,7 @@ export function Game() {
                               onTrackClick={handleTrackClick}
                               isSearching={isSearching}/>
             </Stack>
+            {playlist.map(track => <div key={track.trackId}>{track.title}</div>)}
         </div>
     )
 }
