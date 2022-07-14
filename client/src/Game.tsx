@@ -29,9 +29,11 @@ export function Game() {
         }
 
         function fetchAndSetTracks(searchInput: string): void {
-            fetchTracks(searchInput.trim()).then(result => {
+            fetchTracks(searchInput.trim()).then(tracks => {
                 if (isSubscribed) {
-                    setTracks(result);
+                    const currentPlaylistTrackIds = playlist.map(track => track.trackId);
+                    const tracksNotInPlaylist = tracks.filter(track => !currentPlaylistTrackIds.includes(track.trackId));
+                    setTracks(tracksNotInPlaylist);
                     setIsSearching(false);
                 }
             });
