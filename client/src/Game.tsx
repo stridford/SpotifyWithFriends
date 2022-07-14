@@ -37,11 +37,8 @@ export function Game() {
         }
     }, [searchInput]);
 
-    const debouncedHandler = useMemo(() => {
-        return debounce(handleSearchInputChange, 500)
-    }, [])
-
     function onCopyJoiningUrl(): void { // TODO: include common copy icon in button
+
         if (!gameCode) {
             console.error('No game code');
             return;
@@ -50,6 +47,9 @@ export function Game() {
         navigator.clipboard.writeText(joiningUrl);
     }
 
+    const debouncedHandler = useMemo(() => {
+        return debounce(handleSearchInputChange, 500)
+    }, [])
 
     function handleSearchInputChange(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
         setSearchInput(e.target.value);
