@@ -3,6 +3,7 @@ import {Stack, TextField} from "@mui/material";
 import React, {useEffect, useMemo, useState} from "react";
 import axios from "axios";
 import {TrackResults} from "./TrackResults";
+import {Nullable} from "./global";
 
 export function Game() {
 
@@ -70,6 +71,9 @@ export function Game() {
         // add item to playlist in dynamodb and ui
         const newPlaylist = playlist.concat(selectedTrack);
         setPlaylist(newPlaylist);
+        addTrackToPlaylist(gameCode, player, selectedTrack.trackId).then(response => {
+            console.log(response);
+        })
         // send ws message that a track was added
     }
 
@@ -100,6 +104,24 @@ function getJoiningUrl(gameCode: string): string { // if the function doesn't re
 async function fetchTracks(search: string): Promise<SearchResultDTO[]> {
     const axiosResponse = await axios.get(`https://6h78kwqsuh.execute-api.ap-southeast-2.amazonaws.com/serverless_lambda_stage/search-spotify?search=${encodeURIComponent(search)}`);
     return axiosResponse.data
+}
+
+async function addTrackToPlaylist(gameId: Nullable<string>, addedByPlayer: Nullable<string>, trackId: string) {
+    if (!gameId) {
+        console.error('No game id');
+        return;
+    }
+    if (!addedByPlayer) {
+        console.error('No player that added song');
+        return;
+    }
+    const addSongToPlaylistDTO: AddSongToPlaylistDTO = {
+        gameId,
+        addedByPlayer,
+        trackId
+    }
+    const axiosResponse = await axios.put(`https://6h78kwqsuh.execute-api.ap-southeast-2.amazonaws.com/serverless_lambda_stage/playlist`, addSongToPlaylistDTO);
+    return axiosResponse.data;
 }
 
 function debounce(fn: Function, ms = 300): (this: any, ...args: any[]) => void {

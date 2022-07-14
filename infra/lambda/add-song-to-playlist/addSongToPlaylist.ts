@@ -12,11 +12,14 @@ export const handler = async function (event: APIGatewayEvent, context: Context)
     if (!body) {
         return {
             statusCode: 500,
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+            },
             body: 'No body in request'
         }
     }
 
-    const result: AddSongToPlaylistDTO = JSON.parse(body);
+    const result: AddSongToPlaylistDTO = JSON.parse(body); // should try catch this
 
     const id = makeid(10);
     const item = {
@@ -41,6 +44,9 @@ export const handler = async function (event: APIGatewayEvent, context: Context)
 
     return {
         statusCode: 200,
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+        },
         body: JSON.stringify(item),
     };
 };
