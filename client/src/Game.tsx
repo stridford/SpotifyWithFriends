@@ -60,6 +60,11 @@ export function Game() {
         setSearchInput(e.target.value);
     }
 
+    function handleTrackClick(track: SearchResultDTO) {
+        console.log('track was clicked yo');
+        console.log(track);
+    }
+
     return (
         <div>
             {/*<Button variant="contained"*/}
@@ -71,7 +76,9 @@ export function Game() {
                            onChange={handleActualSearchInputChange}
                            autoComplete="off"
                            variant="outlined"/>
-                <TrackResults searchResultDTOS={tracks} isSearching={isSearching}/>
+                <TrackResults searchResultDTOS={tracks}
+                              onTrackClick={handleTrackClick}
+                              isSearching={isSearching}/>
             </Stack>
         </div>
     )
