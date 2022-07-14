@@ -12,9 +12,6 @@ export const handler = async function (event: APIGatewayEvent, context: Context)
     if (!body) {
         return {
             statusCode: 500,
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-            },
             body: 'No body in request'
         }
     }
@@ -44,9 +41,6 @@ export const handler = async function (event: APIGatewayEvent, context: Context)
 
     return {
         statusCode: 200,
-        headers: {
-            "Access-Control-Allow-Origin": "*",
-        },
         body: JSON.stringify(item),
     };
 };
