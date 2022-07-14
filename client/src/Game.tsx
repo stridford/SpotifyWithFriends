@@ -32,7 +32,6 @@ export function Game() {
                 if (isSubscribed) {
                     setTracks(result);
                     setIsSearching(false);
-                    console.log('set is searching false')
                 }
             });
         }
@@ -54,7 +53,6 @@ export function Game() {
 
     function handleActualSearchInputChange(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
         setIsSearching(true)
-        console.log('set is searching true')
         debouncedHandler(e)
     }
 
