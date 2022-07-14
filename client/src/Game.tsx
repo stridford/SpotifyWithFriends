@@ -60,9 +60,14 @@ export function Game() {
         setSearchInput(e.target.value);
     }
 
-    function handleTrackClick(track: SearchResultDTO) {
+    function handleTrackClick(selectedTrack: SearchResultDTO) {
+        // remove track from results
+        // add item to playlist in dynamodb and ui
+        // send ws message that a track was added
+        const filtered = tracks.filter(track => track.trackId != selectedTrack.trackId);
+        setTracks(filtered);
         console.log('track was clicked yo');
-        console.log(track);
+        console.log(selectedTrack);
     }
 
     return (
