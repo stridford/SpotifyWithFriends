@@ -5,6 +5,8 @@ import axios from "axios";
 import {TrackResults} from "./TrackResults";
 import {Nullable} from "./global";
 import Box from "@mui/material/Box";
+import {Playlist} from "./Playlist";
+
 
 export function Game() {
 
@@ -84,21 +86,22 @@ export function Game() {
             {/*        onClick={onCopyJoiningUrl}*/}
             {/*        className={"listenButton"}>Get joining url</Button>*/}
             <Box>
-                <Drawer variant="permanent" PaperProps={{sx: {width: 500}}}>
+                <Drawer variant="permanent"
+                        PaperProps={{sx: {width: 500}}}>
                     <TextField id="outlined-basic"
                                label="Search tracks..."
                                onChange={handleActualSearchInputChange}
                                sx={{m: 3}}
                                autoComplete="off"
                                variant="outlined"/>
-                    <Box >
+                    <Box>
                         <TrackResults searchResultDTOS={tracks}
                                       onTrackClick={handleTrackClick}
                                       isSearching={isSearching}/>
                     </Box>
 
                 </Drawer>
-                {playlist.map(track => <div key={track.trackId}>{track.title}</div>)}
+                <Playlist playlist={playlist}/>
             </Box>
         </div>
     )
