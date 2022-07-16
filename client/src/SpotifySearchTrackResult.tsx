@@ -9,6 +9,7 @@ export function SpotifySearchTrackResult(props: { track: SearchResultDTO, onTrac
 
     return (
         <Card sx={{display: 'flex', height: "75px", cursor: "pointer"}}
+              square={true}
               onClick={(e) => props.onTrackClick(track)}>
             <CardMedia
                 component="img"

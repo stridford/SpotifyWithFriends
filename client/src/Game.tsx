@@ -84,15 +84,19 @@ export function Game() {
             {/*        onClick={onCopyJoiningUrl}*/}
             {/*        className={"listenButton"}>Get joining url</Button>*/}
             <Box>
-                <Drawer variant="permanent" PaperProps={{sx: {width: 400}}}>
+                <Drawer variant="permanent" PaperProps={{sx: {width: 500}}}>
                     <TextField id="outlined-basic"
                                label="Search tracks..."
                                onChange={handleActualSearchInputChange}
+                               sx={{m: 3}}
                                autoComplete="off"
                                variant="outlined"/>
-                    <TrackResults searchResultDTOS={tracks}
-                                  onTrackClick={handleTrackClick}
-                                  isSearching={isSearching}/>
+                    <Box >
+                        <TrackResults searchResultDTOS={tracks}
+                                      onTrackClick={handleTrackClick}
+                                      isSearching={isSearching}/>
+                    </Box>
+
                 </Drawer>
                 {playlist.map(track => <div key={track.trackId}>{track.title}</div>)}
             </Box>
