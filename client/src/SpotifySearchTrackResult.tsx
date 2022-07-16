@@ -15,13 +15,15 @@ export function SpotifySearchTrackResult(props: { track: SearchResultDTO, onTrac
                 sx={{width: 60}}
                 image={track.imageUrl}
             />
-            <Box sx={{display: 'flex', flexDirection: 'column'}}>
-                <CardContent sx={{flex: '1 0 auto'}}>
+            <Box>
+                <CardContent>
                     <Typography component="div"
+                                noWrap
                                 variant="subtitle1">
                         {track.title}
                     </Typography>
                     <Typography variant="subtitle1"
+                                noWrap
                                 color="text.secondary"
                                 component="div">
                         {track.artist}

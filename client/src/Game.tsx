@@ -1,9 +1,10 @@
 import {useParams, useSearchParams} from "react-router-dom";
-import {Stack, TextField} from "@mui/material";
+import {Drawer, TextField} from "@mui/material";
 import React, {useEffect, useMemo, useState} from "react";
 import axios from "axios";
 import {TrackResults} from "./TrackResults";
 import {Nullable} from "./global";
+import Box from "@mui/material/Box";
 
 export function Game() {
 
@@ -82,17 +83,19 @@ export function Game() {
             {/*<Button variant="contained"*/}
             {/*        onClick={onCopyJoiningUrl}*/}
             {/*        className={"listenButton"}>Get joining url</Button>*/}
-            <Stack width="600px">
-                <TextField id="outlined-basic"
-                           label="Search tracks..."
-                           onChange={handleActualSearchInputChange}
-                           autoComplete="off"
-                           variant="outlined"/>
-                <TrackResults searchResultDTOS={tracks}
-                              onTrackClick={handleTrackClick}
-                              isSearching={isSearching}/>
-            </Stack>
-            {playlist.map(track => <div key={track.trackId}>{track.title}</div>)}
+            <Box>
+                <Drawer variant="permanent" PaperProps={{sx: {width: 400}}}>
+                    <TextField id="outlined-basic"
+                               label="Search tracks..."
+                               onChange={handleActualSearchInputChange}
+                               autoComplete="off"
+                               variant="outlined"/>
+                    <TrackResults searchResultDTOS={tracks}
+                                  onTrackClick={handleTrackClick}
+                                  isSearching={isSearching}/>
+                </Drawer>
+                {playlist.map(track => <div key={track.trackId}>{track.title}</div>)}
+            </Box>
         </div>
     )
 }

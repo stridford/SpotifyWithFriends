@@ -1,6 +1,7 @@
 import {Button, Stack} from "@mui/material";
 import React from "react";
 import {useNavigate} from "react-router-dom";
+import Typography from "@mui/material/Typography";
 
 export default function StartPage() {
 
@@ -16,11 +17,12 @@ export default function StartPage() {
                    sx={{
                        textAlign: 'center'
                    }}>
-                <div>
-                    <div>Judging other people's music tastes has never been easier!</div>
-                    <br/>
-                    <div> Create shared playlists, vote on your favourite songs and see who voted for yours!</div>
-                </div>
+                <Typography>
+                    Judging other people's music tastes has never been easier!
+                </Typography>
+                <Typography>
+                    Create shared playlists, vote on your favourite songs and see who voted for yours!
+                </Typography>
                 <Button className={"appButton"}
                         onClick={handleStartClick}
                         variant="contained">Start</Button>
